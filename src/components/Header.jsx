@@ -29,7 +29,7 @@ const Header = () => {
             </div>
             <Menu className='block sm:hidden cursor-pointer' onClick={handleOpenning} />
 
-            <nav className={`${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"} sm:flex flex-col sm:flex-row justify-between items-center absolute left-0 top-[100%] sm:relative sm:top-0 w-[100%] sm:max-w-[70%] gap-[20px] text-orange-600 sm:text-gray-600/90 bg-white py-[20px] sm:py-[0] duration-300 transition-all`}>
+            <nav className={`${isOpen ? "block" : "hidden sm:flex"}  flex-col sm:flex-row justify-between items-center absolute left-0 top-[100%] sm:relative sm:top-0 w-[100%] sm:max-w-[70%] gap-[20px] text-orange-600 sm:text-gray-600/90 bg-white py-[20px] sm:py-[0] duration-300 transition-all`}>
 
                 <div className='flex flex-col sm:flex-row items-center'>
                     {
