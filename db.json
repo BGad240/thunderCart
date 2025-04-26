@@ -1,0 +1,25 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "title": "Product 1",
+            "price": 29.99,
+            "image": "https://via.placeholder.com/300x300?text=Product+1",
+            "description": "lorem ipsum ksjfkjsd"
+        },
+        {
+            "id": 2,
+            "title": "Product 2",
+            "price": 19.99,
+            "image": "https://via.placeholder.com/300x300",
+            "description": "lorem ipsum ksjfkjsd"
+        },
+        {
+            "id": 3,
+            "title": "Product 3",
+            "price": 39.99,
+            "image": "https://via.placeholder.com/300x300?text=Product+3",
+            "description": "lorem ipsum ksjfkjsd"
+        }
+    ]
+}
