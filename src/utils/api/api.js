@@ -1,15 +1,19 @@
-const URL = `https://dummyjson.com/products`
+const URL = `https://dummyjson.com/products/category/tops`
+const URLALL = `https://dummyjson.com/products`
+const URLCAT = `https://dummyjson.com/products/categories`
+
+const SORTURLCAT = `https://dummyjson.com/products/category`
 
 export async function getAllProducts() {
     try {
-        const res = await fetch(URL)
+        const res = await fetch(URLALL)
         const data = await res.json()
         return data
     } catch (error) {
         console.error(error)
         return []
     }
-} 
+}
 
 export async function getPopular() {
     try {
@@ -21,5 +25,32 @@ export async function getPopular() {
         console.error(error)
         return []
     }
+
 }
 
+
+export async function getCat() {
+    try {
+        const res = await fetch(URLCAT)
+        const data = await res.json()
+        return data
+        console.log(data)
+    } catch (error) {
+        console.error(error)
+        return []
+    }
+
+}
+
+
+export async function getByCategory(cateName) {
+    try {
+        const res = await fetch(`${SORTURLCAT}/${cateName}`)
+        const data = await res.json()
+        console.log(data.products)
+        return data.products
+
+    } catch (error) {
+        console.error(error)
+    }
+}
