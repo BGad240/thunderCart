@@ -1,5 +1,5 @@
 "use client"
-import SelectedCategory from '@/components/SelectedCategory'
+
 import StoreSections from '@/components/StoreSections'
 import SideSectionCate from '@/components/uiComponents/SideSectionCate'
 import React from 'react'
@@ -124,7 +124,7 @@ const page = () => {
 
             </div>
             <div className="flex-1 w-full">
-                <StoreSections prod={products.length > 0 ? products : allProducts} openned={isOpen} selected={selectedCategory}/>
+                <StoreSections prod={products.length > 0 ? products : allProducts} openned={isOpen} selected={selectedCategory} />
             </div>
         </div>
 

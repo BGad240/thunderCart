@@ -10,7 +10,7 @@ const StoreSections = ({ prod, openned, selected }) => {
 
                 {
                     prod.map(product => {
-                        return <ProductCard title={product.title} des={product.description} rating={product.rating} price={product.price} image={product.images[0]} />
+                        return <ProductCard title={product.title} des={product.description} rating={product.rating} price={product.price} image={product.images[0]} id={product.id} />
                     })
                 }
             </div>

@@ -1,10 +1,11 @@
 import React from 'react'
 import { trunction } from '../../utils/edits'
 import Image from 'next/image'
+import Link from 'next/link'
 
 
 
-const ProductCard = ({ image, des, price, title, rating }) => {
+const ProductCard = ({ image, des, price, title, rating, id }) => {
     return (
 
 
@@ -18,7 +19,9 @@ const ProductCard = ({ image, des, price, title, rating }) => {
                 <p className='inline-block sm:block text-[14px] text-gray-400'>{rating}</p>
                 <div className='flex justify-between'>
                     <p className='text-[16px] text-gray-600/100 font-semibold'>${price}</p>
-                    <button className='hidden sm:block text-[15px] rounded-[20px] border-[1px] border-gray-500/20 py-[2px] px-[10px] text-gray-500 focus:outline-none hover:bg-orange-500/80 duration-350 hover:text-white'>Buy Now</button>
+                    <Link href={`/product/${id}`}>
+                        <button className='hidden sm:block text-[15px] rounded-[20px] border-[1px] border-gray-500/20 py-[2px] px-[10px] text-gray-500 focus:outline-none hover:bg-orange-500/80 duration-350 hover:text-white'>Buy Now</button>
+                    </Link>
                 </div>
             </div>
         </div>

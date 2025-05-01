@@ -8,6 +8,12 @@ export function trunction(text, length, replaceWith = "...") {
     }
 }
 
+
+export function discountDegree(price, precent) {
+    const discount = Math.round((price * precent) / 100)
+    return price + discount
+}
+
 // export function slicingText(text, length) {
 //     return text.length > length ? text.slice
 // }

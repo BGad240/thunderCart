@@ -27,7 +27,7 @@ const PopularSection = () => {
             <h1 className='my-[30px] text-[25px] text-gray-700 '>Popular Products</h1>
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mx-[auto] gap-[20px]'>
                 {
-                    popular.slice(0, 10).map(prod => <ProductCard title={prod.title} price={prod.price} des={prod.description} rating={prod.rating} key={prod.id} image={prod.images[0]} />)
+                    popular.slice(0, 10).map(prod => <ProductCard title={prod.title} price={prod.price} des={prod.description} rating={prod.rating} key={prod.id} image={prod.images[0]} id={prod.id} />)
                 }
             </div>
             <div className='w-fit mx-auto'>

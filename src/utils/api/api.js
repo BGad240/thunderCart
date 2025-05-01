@@ -1,8 +1,9 @@
 const URL = `https://dummyjson.com/products/category/tops`
+const SORTURLCAT = `https://dummyjson.com/products/category`
 const URLALL = `https://dummyjson.com/products`
 const URLCAT = `https://dummyjson.com/products/categories`
 
-const SORTURLCAT = `https://dummyjson.com/products/category`
+
 
 export async function getAllProducts() {
     try {
@@ -52,5 +53,18 @@ export async function getByCategory(cateName) {
 
     } catch (error) {
         console.error(error)
+    }
+}
+
+
+export async function getProductId(id) {
+    try {
+        const res = await fetch(`${URLALL}/${id}`)
+        const data = await res.json()
+        console.log(data)
+        return data
+    } catch (error) {
+        console.error(error)
+        return []
     }
 }
