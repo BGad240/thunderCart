@@ -4,8 +4,8 @@ import PopularSection from "@/components/PopularSection";
 import PosterSection from "@/components/PosterSection";
 import SubscribeSection from "@/components/SubscribeSection";
 
-export default function Home() {
-  return (
+export default async function Home() {
+    return (
     <div>
       <Hero />
       <PopularSection />

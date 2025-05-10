@@ -3,6 +3,9 @@ import React from 'react'
 import { useState, useEffect } from "react"
 import { getPopular } from '../utils/api/api'
 import ProductCard from './uiComponents/ProductCard'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 
 const PopularSection = () => {
     const [popular, setpopular] = useState([])
@@ -21,13 +24,18 @@ const PopularSection = () => {
     }, [])
 
 
+    useEffect(() => {
+        AOS.init({ duration: 600 })
+    }, [])
+
+
 
     return (
         <div className=' w-[80%] mx-[auto] cursor-pointer'>
             <h1 className='my-[30px] text-[25px] text-gray-700 '>Popular Products</h1>
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mx-[auto] gap-[20px]'>
                 {
-                    popular.slice(0, 10).map(prod => <ProductCard title={prod.title} price={prod.price} des={prod.description} rating={prod.rating} key={prod.id} image={prod.images[0]} id={prod.id} />)
+                    popular.slice(0, 10).map(prod => <div data-aos="fade-up" key={prod.id}><ProductCard title={prod.title} price={prod.price} des={prod.description} rating={prod.rating} image={prod.images[0]} id={prod.id} /></div>)
                 }
             </div>
             <div className='w-fit mx-auto'>

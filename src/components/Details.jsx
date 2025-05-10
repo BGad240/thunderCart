@@ -1,8 +1,7 @@
 import React from 'react'
-import Image from 'next/image'
 import { discountDegree } from '@/utils/edits'
 import ImageViewer from './uiComponents/ImageViewer'
-
+import BuyNow from './uiComponents/buttons/BuyNow'
 const Details = ({ product }) => {
 
     return (
@@ -25,7 +24,7 @@ const Details = ({ product }) => {
                     </div>
                     <div className='mt-[30px]'>
                         <button className='m-[10px] w-[200px] bg-gray-300/30 text-gray-600/90 hover:bg-gray-400/50 duration-300 h-[50px]'>Add To Cart</button>
-                        <button className='m-[10px] w-[200px] bg-orange-500/80 h-[50px] mr-[20px] hover:bg-orange-600/80 duration-300 text-white'>Buy Now</button>
+                        <BuyNow product={product} />
                     </div>
                 </div>
             </div>

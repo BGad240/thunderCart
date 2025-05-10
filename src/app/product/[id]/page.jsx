@@ -4,7 +4,6 @@ import Details from '@/components/Details'
 
 export default async function ProductPage({ params, searchParams }) {
     const { id } = params
-    const from = searchParams
     try {
         const res = await getProductId(id)
         if (res.length === 0) {
