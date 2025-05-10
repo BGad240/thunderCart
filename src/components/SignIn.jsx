@@ -23,7 +23,6 @@ export default function SignIn() {
                 transition={{ duration: 0.7 }}
                 className="grid grid-cols-1 md:grid-cols-2 bg-white/10 backdrop-blur-md rounded-[30px] shadow-2xl overflow-hidden w-full max-w-[900px] border border-white/20"
             >
-                {/* الصورة */}
                 <motion.div
                     className="hidden md:block"
                     initial={{ x: -100, opacity: 0 }}
@@ -40,7 +39,6 @@ export default function SignIn() {
                     />
                 </motion.div>
 
-                {/* المحتوى */}
                 <div className="p-10 flex flex-col justify-center items-center text-center text-white">
                     <motion.h1
                         className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight"
