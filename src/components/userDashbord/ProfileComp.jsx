@@ -1,122 +1,189 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import Swal from 'sweetalert2'
-import { getOrders, getWishes, removeItem } from '@/utils/storage'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
-export default function ProfileClient({ session }) {
-  const [orders, setOrders] = useState([])
-  const [wishlist, setWishlist] = useState([])
+export default function UserProfile() {
+    const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+    const storedOrders = typeof window !== 'undefined' ? localStorage.getItem('orders') : null;
 
-  useEffect(() => {
-    setOrders(getOrders())
-    setWishlist(getWishes())
-  }, [])
+    const user = storedUser ? JSON.parse(storedUser) : {};
+    const orders = storedOrders ? JSON.parse(storedOrders) : [];
 
-  if (!session) {
+    const [profile, setProfile] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+        phone: user?.phone || '',
+        address: user?.address || '',
+    });
+
+    const [stats, setStats] = useState({
+        ordersCount: 0,
+        totalPaid: 0,
+        completedOrders: 0,
+        lastPaymentDate: '-',
+    });
+
+    useEffect(() => {
+        const ordersCount = orders.length;
+
+        const totalPaid = orders.reduce((sum, order) => {
+            return order.paidStatus === 'paid' ? sum + (Number(order.price) || 0) : sum;
+        }, 0);
+
+        const completedOrders = orders.length
+            ? Math.round(
+                (orders.filter((order) => order.status === 'completed').length / orders.length) * 100
+            )
+            : 0;
+
+        const lastPaymentDates = orders
+            .filter((order) => order.paidStatus === 'paid' && order.paymentDate)
+            .map((order) => new Date(order.paymentDate));
+
+        const lastPaymentDate =
+            lastPaymentDates.length > 0
+                ? lastPaymentDates.reduce((a, b) => (a > b ? a : b)).toLocaleDateString()
+                : '-';
+
+        setStats({
+            ordersCount,
+            totalPaid: Number(totalPaid),
+            completedOrders,
+            lastPaymentDate,
+        });
+    }, [orders]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProfile((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSave = () => {
+
+        localStorage.setItem('user', JSON.stringify(profile));
+        alert('Profile saved!');
+    };
+
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-red-600 font-bold text-xl">You are not logged in</p>
-      </div>
-    )
-  }
+        <div className="max-w-5xl mx-auto mt-10 p-10 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-10 bg-white font-sans shadow-lg">
 
-  const { user } = session
+            <div className="space-y-8">
+                <div className="bg-white p-8 rounded-xl shadow-md max-w-md mx-auto">
+                    <h2 className="text-2xl font-extrabold text-gray-900 mb-6 border-b pb-2">User Profile</h2>
 
-  const handleRemoveFromWishlist = (id) => {
-    const updatedWishlist = removeItem(id)
-    setWishlist(updatedWishlist)
+                    <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                value={profile.name}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-gray-300 px-5 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="Your full name"
+                                required
+                            />
+                        </div>
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Removed!',
-      text: 'The product was removed from your wishlist.',
-      timer: 1500,
-      showConfirmButton: false,
-    })
-  }
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                value={profile.email}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-gray-300 px-5 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="you@example.com"
+                                required
+                            />
+                        </div>
 
-  return (
-    <main className="w-full mx-auto my-12 px-6 bg-gray-50 rounded-2xl shadow-lg text-gray-700 font-sans">
-      <section className="flex flex-wrap items-center gap-8 border-b border-gray-300 pb-8 mb-12">
-        {user.image ? (
-          <Image
-            src={user.image}
-            alt="Profile"
-            width={110}
-            height={110}
-            className="rounded-full object-cover shadow-md"
-            priority
-          />
-        ) : (
-          <div className="w-[110px] h-[110px] rounded-full bg-gray-300 flex items-center justify-center text-gray-500 font-bold text-2xl">
-            N/A
-          </div>
-        )}
-        <div className="flex-1 min-w-[220px]">
-          <h1 className="text-3xl font-extrabold text-gray-900">{user.name || 'No Name'}</h1>
-          <p className="mt-1 text-gray-500 font-medium">{user.email || 'No Email'}</p>
-        </div>
-      </section>
+                        <div>
+                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                value={profile.phone}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-gray-300 px-5 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="+20 123 456 7890"
+                            />
+                        </div>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Your Orders ({orders.length})
-        </h2>
-        {orders.length === 0 ? (
-          <p className="italic text-gray-400">You have no orders yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {orders.map((order, idx) => (
-              <div
-                key={idx}
-                className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition-shadow duration-200"
-              >
-                <h3 className="text-blue-600 font-semibold text-lg mb-2">
-                  {order.title || 'Order'}
-                </h3>
-                <p className="text-gray-600 mb-1">
-                  Quantity: <span className="font-semibold">{order.quantity || 1}</span>
-                </p>
-                <p className="text-gray-600">
-                  Price: <span className="font-semibold">${order.price ?? 'N/A'}</span>
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+                        <div>
+                            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                            <textarea
+                                id="address"
+                                name="address"
+                                rows={4}
+                                value={profile.address}
+                                onChange={handleChange}
+                                className="w-full rounded-md border border-gray-300 px-5 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="Your address"
+                            />
+                        </div>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Your Wishlist ({wishlist.length})
-        </h2>
-        {wishlist.length === 0 ? (
-          <p className="italic text-gray-400">Your wishlist is empty.</p>
-        ) : (
-          <ul className="space-y-4">
-            {wishlist.map((product) => (
-              <li
-                key={product.id}
-                className="flex justify-between items-center bg-gray-200 rounded-lg px-5 py-3 shadow-sm"
-              >
-                <div>
-                  <p className="font-semibold text-gray-800">{product.title || 'Product'}</p>
-                  <p className="text-gray-600">${product.price ?? 'N/A'}</p>
+                        <button
+                            type="submit"
+                            className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold shadow-md hover:from-orange-500 hover:to-orange-700 transition"
+                        >
+                            Save Profile
+                        </button>
+                    </form>
                 </div>
-                <button
-                  onClick={() => handleRemoveFromWishlist(product.id)}
-                  className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
-                  aria-label={`Remove ${product.title} from wishlist`}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-    </main>
-  )
+
+
+                <div className="flex flex-col items-center justify-center space-y-6">
+                    <div className="w-40 h-40 relative rounded-full overflow-hidden shadow-lg border-4 border-orange-400">
+                        <Image
+                            src={user?.image || '/default-profile.png'}
+                            alt={profile.name}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            priority
+                        />
+                    </div>
+
+                    <div className="text-center text-gray-700">
+                        <h3 className="text-xl font-semibold">{profile.name}</h3>
+                        <p className="text-sm">{profile.email}</p>
+                    </div>
+
+                    <div className="w-full mt-8 bg-gray-50 rounded-lg shadow p-6">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">User Statistics</h4>
+                        <div className="grid grid-cols-2 gap-4 text-gray-700">
+                            <div className="bg-white p-4 rounded-md shadow-sm text-center">
+                                <div className="text-3xl font-bold text-orange-400">{stats.ordersCount}</div>
+                                <div className="mt-1 text-sm">Orders</div>
+                            </div>
+
+                            <div className="bg-white p-4 rounded-md shadow-sm text-center">
+                                <div className="text-3xl font-bold text-orange-400">
+                                    ${typeof stats.totalPaid === 'number' ? stats.totalPaid.toFixed(2) : '0.00'}
+                                </div>
+                                <div className="mt-1 text-sm">Total Paid</div>
+                            </div>
+
+                            <div className="bg-white p-4 rounded-md shadow-sm text-center">
+                                <div className="text-3xl font-bold text-orange-400">{stats.completedOrders}%</div>
+                                <div className="mt-1 text-sm">Completed Orders</div>
+                            </div>
+
+                            <div className="bg-white p-4 rounded-md shadow-sm text-center">
+                                <div className="text-base text-gray-600">{stats.lastPaymentDate}</div>
+                                <div className="mt-1 text-sm">Last Payment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

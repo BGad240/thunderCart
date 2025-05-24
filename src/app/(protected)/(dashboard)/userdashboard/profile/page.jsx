@@ -6,7 +6,7 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <ProfileClient session={session} />
+      <ProfileClient user={session} />
     </div>
   )
 }
