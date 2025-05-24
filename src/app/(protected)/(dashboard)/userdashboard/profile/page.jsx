@@ -1,7 +1,12 @@
-import React from 'react'
+import ProfileClient from '@/components/userDashbord/ProfileComp'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../../../../lib/nextAuth'  
+export default async function ProfilePage() {
+  const session = await getServerSession(authOptions)
 
-export default function page() {
   return (
-    <div>page</div>
+    <div>
+      <ProfileClient session={session} />
+    </div>
   )
 }

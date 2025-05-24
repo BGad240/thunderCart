@@ -1,17 +1,18 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { authOptions } from "./lib/nextAuth";
 import { getServerSession } from "next-auth";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// خطوط Google Fonts
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoMono = Roboto_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -21,15 +22,13 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const session = await getServerSession(authOptions)
-  console.log(session)
+  const session = await getServerSession(authOptions);
+  console.log(session);
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header session={session?.user}/>
+      <body className={`${inter.variable} ${robotoMono.variable} antialiased`}>
+        <Header session={session?.user} />
         {children}
         <Footer />
       </body>
